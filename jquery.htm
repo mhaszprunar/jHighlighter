@@ -26,7 +26,14 @@
                       'multipleSelection': true
                     }, options);
 
-                var $selected = [];
+                var $selected = null;
+                
+                var toggleCheckbox = function($checkbox){
+                    $checkbox.toggleClass(settings.highlightClass);
+
+                    var newCheckState = ($checkbox.is(':checked')) ? false : true;
+                    $checkbox.prop('checked', newCheckState);
+                }
                     
                 // Settings manipulation (correction and dynamic parameters)
                 if(settings.highlightClass.substr(0,1) === '.')
@@ -38,6 +45,8 @@
                 {
                     settings.highlightClassSelector = '.' + settings.highlightClass;
                 }
+
+                
 
                 // Go!
                 return this.each(function() {
@@ -52,16 +61,13 @@
 
                     // click handler
                     $this.on('click', function(){
-                    
-                        if(settings.multipleSelection === false)
+                        var $checkbox = $(this);
+                        if(settings.multipleSelection === false && selected !== null) // no multiple selection and somethign is already selected
                         {
-                          
+                          toggleCheckbox($selected); // deactivate already activated checkbox
                         }
-                    
-                        $this.toggleClass(settings.highlightClass);
-
-                        var newCheckState = ($checkbox.is(':checked')) ? false : true;
-                        $checkbox.prop('checked', newCheckState);
+                        toggleCheckbox($checkbox); // activate clicked checkbox
+                        $selected = $checkbox; // store for later
                     });
 
                 });
