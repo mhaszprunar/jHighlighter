@@ -77,6 +77,13 @@
         </script>
 </head>
 <body>
+    
+    <script>
+        $(function(){
+           $('#testtable').find('tr').highlightSelection();
+        });
+    </script>
+    
     <table id="testtable">
         <tr>
             <th>headline</th>
@@ -249,10 +256,6 @@
 
     </table>
 
-    <script>
-        $(function(){
-           $('#testtable').find('tr').highlightSelection();
-        });
-    </script>
+    
 </body>
 </html>
