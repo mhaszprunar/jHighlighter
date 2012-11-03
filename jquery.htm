@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+        <script src="jquery-1.8.2.min.js"></script>
+        <style>
+            td {
+                border-bottom:1px solid #efefef;
+            }
+            .lineChecked {
+                background-color: #AFA;
+            }
+        </style>
+        <script>
+            (function( $ ){
+
+              $.fn.highlightSelection = function( options ) {
+
+                // Create some defaults, extending them with any options that were provided
+                var settings = $.extend( {
+                      'multiSelect'     : false,
+                      'highlightClass'  : 'lineChecked',
+                      'hideContainer'   : true,
+                      'highlightClassSelector' : null,
+                      'multipleSelection': true
+                    }, options);
+
+                var $selected = [];
+                    
+                // Settings manipulation (correction and dynamic parameters)
+                if(settings.highlightClass.substr(0,1) === '.')
+                {
+                    settings.highlightClassSelector = $(settings.highlightClass);
+                    settings.highlightClass = settings.highlightClass.substr(1);
+                }
+                else
+                {
+                    settings.highlightClassSelector = '.' + settings.highlightClass;
+                }
+
+                // Go!
+                return this.each(function() {
+                    var $this = $(this),
+                        $checkbox = $this.find(':checkbox');
+
+                    // hide container
+                    if(settings.hideContainer)
+                    {
+                        $checkbox.parent().hide();
+                    }
+
+                    // click handler
+                    $this.on('click', function(){
+                    
+                        if(settings.multipleSelection === false)
+                        {
+                          
+                        }
+                    
+                        $this.toggleClass(settings.highlightClass);
+
+                        var newCheckState = ($checkbox.is(':checked')) ? false : true;
+                        $checkbox.prop('checked', newCheckState);
+                    });
+
+                });
+
+              };
+            })( jQuery );
+        </script>
+</head>
+<body>
+    <table id="testtable">
+        <tr>
+            <th>headline</th>
+            <th>headline</th>
+            <th>headline</th>
+            <th>headline</th>
+            <th>headline</th>
+            <th>headline</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="lala" /></td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+            <td>testtext</td>
+        </tr>
+
+    </table>
+
+    <script>
+        $(function(){
+           $('#testtable').find('tr').highlightSelection();
+        });
+    </script>
+</body>
+</html>
