@@ -28,8 +28,8 @@
 
                 var $selected = null;
                 
-                var toggleCheckbox = function($checkbox){
-                    $checkbox.toggleClass(settings.highlightClass);
+                var toggleCheckbox = function($element, $checkbox){
+                    $element.toggleClass(settings.highlightClass);
 
                     var newCheckState = ($checkbox.is(':checked')) ? false : true;
                     $checkbox.prop('checked', newCheckState);
@@ -50,8 +50,8 @@
 
                 // Go!
                 return this.each(function() {
-                    var $this = $(this),
-                        $checkbox = $this.find(':checkbox');
+                    var $element = $(this),
+                        $checkbox = $element.find(':checkbox');
 
                     // hide container
                     if(settings.hideContainer)
@@ -60,14 +60,13 @@
                     }
 
                     // click handler
-                    $this.on('click', function(){
-                        var $checkbox = $(this);
-                        if(settings.multipleSelection === false && selected !== null) // no multiple selection and somethign is already selected
+                    $element.on('click', function(){
+                        if(settings.multipleSelection === false && $selected !== null) // no multiple selection and somethign is already selected
                         {
-                          toggleCheckbox($selected); // deactivate already activated checkbox
+                          toggleCheckbox($selected.element, $selected.checkbox); // deactivate already activated checkbox
                         }
-                        toggleCheckbox($checkbox); // activate clicked checkbox
-                        $selected = $checkbox; // store for later
+                        toggleCheckbox($element, $checkbox); // activate clicked checkbox
+                        $selected = {'element': $element, 'checkbox':$checkbox}; // store for later
                     });
 
                 });
@@ -80,7 +79,11 @@
     
     <script>
         $(function(){
-           $('#testtable').find('tr').highlightSelection();
+            var options = {
+                multipleSelection : false,
+                hideContainer : false
+            };
+           $('#testtable').find('tr').highlightSelection(options);
         });
     </script>
     
