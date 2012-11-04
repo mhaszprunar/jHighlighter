@@ -8,6 +8,14 @@
             td {
                 border-bottom:1px solid #efefef;
             }
+            
+            section {
+                height:70px;
+                width:300px;
+                border-radius: 5px;
+                background-color:#FAF;
+            }
+            
             .lineChecked {
                 background-color: #AFA;
             }
@@ -84,8 +92,19 @@
                 hideContainer : false
             };
            $('#testtable').find('tr').highlightSelection(options);
+           
+           $('section').highlightSelection();
+           
         });
     </script>
+    
+    
+    <section>democontent</section>
+    <section>democontent</section>
+    <section>democontent</section>
+    <section>democontent</section>
+    <section>democontent</section>
+    
     
     <table id="testtable">
         <tr>
