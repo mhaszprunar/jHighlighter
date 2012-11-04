@@ -28,10 +28,10 @@
 
                 // Create some defaults, extending them with any options that were provided
                 var settings = $.extend( {
-                      'multiSelect'     : false,
-                      'highlightClass'  : 'lineChecked',
-                      'hideContainer'   : true,
-                      'multipleSelection': true,
+                      'elementType'     : 'checkbox',  // checkbox | radio | block  (block = just line highlighting, no element activation)
+                      'highlightClass'  : 'lineChecked', // any CSS class name
+                      'hideContainer'   : true,  // hides the parent element of the radio or checkbox
+                      
                     }, options);
 
                 var toggleCheckbox = function($element, $checkbox){
@@ -42,16 +42,25 @@
                 }
                 
                 var resetCheckboxes = function(){
-                    $('.' + settings.highlightClass)
-                        .removeClass(settings.highlightClass)
-                        .find(':checkbox')
+                    var $elements = $('.' + settings.highlightClass).removeClass(settings.highlightClass);
+                    
+                    if(settings.elementType !== 'block')
+                    {
+                        $elements.find(':' + settings.elementType)
                             .prop('checked', false);
+                    }
                 }
                 
                 // Go!
                 return this.each(function() {
                     var $element = $(this),
-                        $checkbox = $element.find(':checkbox');
+                        $checkbox = (settings.elementType === 'block') ? $(null) : $element.find(':'+settings.elementType);
+
+                    // if checkboxes are already activated
+                    if($checkbox.is(':checked'))
+                    {
+                        $element.addClass(settings.highlightClass);
+                    }
 
                     // hide container
                     if(settings.hideContainer)
@@ -61,7 +70,7 @@
 
                     // click handler
                     $element.on('click', function(){
-                        if(settings.multipleSelection === false) // no multiple selection and somethign is already selected
+                        if(settings.elementType === 'radio') // no multiple selection
                         {
                             resetCheckboxes();
                         }
@@ -79,16 +88,22 @@
     <script>
         $(function(){
             var options = {
-                multipleSelection : false,
                 hideContainer : false
             };
            $('#testtable').find('tr').highlightSelection(options);
            
-           $('section').highlightSelection();
+           $('section').highlightSelection({elementType:'block'});
            
+           $('#radios').find('div').highlightSelection({elementType:'radio', hideContainer: false});
         });
     </script>
     
+    <div id="radios">
+        <div><input type="radio" name="haha" checked="checked" />Text</div>
+        <div><input type="radio" name="haha"  />Text</div>
+        <div><input type="radio" name="haha"  />TExt</div>
+        <div><input type="radio" name="haha"  />Text</div>
+    </div>
     
     <section>democontent</section>
     <section>democontent</section>
@@ -107,7 +122,7 @@
             <th>headline</th>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala1" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
@@ -115,7 +130,7 @@
             <td>testtext</td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala2" checked="checked" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
@@ -123,7 +138,7 @@
             <td>testtext</td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala3" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
@@ -131,7 +146,7 @@
             <td>testtext</td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala4" checked="checked" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
@@ -139,7 +154,7 @@
             <td>testtext</td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala5" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
@@ -147,7 +162,7 @@
             <td>testtext</td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala6" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
@@ -155,118 +170,13 @@
             <td>testtext</td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala" /></td>
+            <td><input type="checkbox" name="lala7" /></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
         </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" name="lala" /></td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-            <td>testtext</td>
-        </tr>
-
     </table>
 
     
