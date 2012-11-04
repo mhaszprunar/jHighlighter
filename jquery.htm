@@ -12,8 +12,9 @@
             section {
                 height:70px;
                 width:300px;
-                border-radius: 5px;
-                background-color:#FAF;
+                border-radius: 10px;
+                background-color:#EEE;
+                margin-bottom:5px;
             }
             
             .lineChecked {
@@ -30,32 +31,23 @@
                       'multiSelect'     : false,
                       'highlightClass'  : 'lineChecked',
                       'hideContainer'   : true,
-                      'highlightClassSelector' : null,
-                      'multipleSelection': true
+                      'multipleSelection': true,
                     }, options);
 
-                var $selected = null;
-                
                 var toggleCheckbox = function($element, $checkbox){
                     $element.toggleClass(settings.highlightClass);
 
                     var newCheckState = ($checkbox.is(':checked')) ? false : true;
                     $checkbox.prop('checked', newCheckState);
                 }
-                    
-                // Settings manipulation (correction and dynamic parameters)
-                if(settings.highlightClass.substr(0,1) === '.')
-                {
-                    settings.highlightClassSelector = $(settings.highlightClass);
-                    settings.highlightClass = settings.highlightClass.substr(1);
-                }
-                else
-                {
-                    settings.highlightClassSelector = '.' + settings.highlightClass;
-                }
-
                 
-
+                var resetCheckboxes = function(){
+                    $('.' + settings.highlightClass)
+                        .removeClass(settings.highlightClass)
+                        .find(':checkbox')
+                            .prop('checked', false);
+                }
+                
                 // Go!
                 return this.each(function() {
                     var $element = $(this),
@@ -64,17 +56,16 @@
                     // hide container
                     if(settings.hideContainer)
                     {
-                        $checkbox.parent().hide();
+                        $checkbox.parent().hide(); // if no checkbox then no hide happens
                     }
 
                     // click handler
                     $element.on('click', function(){
-                        if(settings.multipleSelection === false && $selected !== null) // no multiple selection and somethign is already selected
+                        if(settings.multipleSelection === false) // no multiple selection and somethign is already selected
                         {
-                          toggleCheckbox($selected.element, $selected.checkbox); // deactivate already activated checkbox
+                            resetCheckboxes();
                         }
                         toggleCheckbox($element, $checkbox); // activate clicked checkbox
-                        $selected = {'element': $element, 'checkbox':$checkbox}; // store for later
                     });
 
                 });
