@@ -30,17 +30,18 @@
                 
                 // Create some defaults, extending them with any options that were provided
                 var settings = $.extend( {
-                      'elementType'     : 'checkbox',  // checkbox | radio | block  (block = just line highlighting, no element activation)
-                      'highlightClass'  : 'lineChecked', // any CSS class name
-                      'hideContainer'   : true,  // hides the parent element of the radio or checkbox
-                      'multipleSelection' : true  // only valid if elementType = block. For all others this will be set automatically
+                      'elementType'         : 'checkbox',       // checkbox | radio | block  (block = just line highlighting, no element activation)
+                      'highlightClass'      : 'lineChecked',    // any CSS class name
+                      'hideParent'          : true,             // hides the parent element of the radio or checkbox. Set to FALSE for block elements automatically
+                      'multipleSelection'   : true              // only valid if elementType = block. For all others this will be set automatically
                     }, options);
 
                 // setting multipleSelection right for checkbox and radio
                 switch(settings.elementType)
                 {
-                    case 'radio': settings.multipleSelection = false; break;
-                    case 'checkbox': settings.multipleSelection = true; break;                   
+                    case 'radio':       settings.multipleSelection = false; break;
+                    case 'checkbox':    settings.multipleSelection = true; break;
+                    case 'block':       settings.hideParent = false; break;
                 }
 
                 // helper function to toggle elements
@@ -57,24 +58,23 @@
                     
                     if(settings.elementType !== 'block')
                     {
-                        $elements.find(':' + settings.elementType)
-                            .prop('checked', false);
+                        $elements.find(':' + settings.elementType).prop('checked', false);
                     }
                 }
                 
-                // Go!
+                // Attach events
                 return this.each(function() {
                     var $element = $(this),
                         $input = (settings.elementType === 'block') ? $(null) : $element.find(':'+settings.elementType);
 
-                    // if checkboxes are already activated
+                    // if inputs are already activated
                     if($input.is(':checked'))
                     {
                         $element.addClass(settings.highlightClass);
                     }
 
                     // hide container
-                    if(settings.hideContainer)
+                    if(settings.hideParent)
                     {
                         $input.parent().hide(); // if no checkbox then no hide happens
                     }
@@ -105,7 +105,7 @@
            
            $('section').highlightSelection({elementType:'block'});
            
-           $('#radios').find('div').highlightSelection({elementType:'radio', hideContainer: false});
+           $('#radios').find('div').highlightSelection({elementType:'radio', hideParent: false});
         });
     </script>
     
@@ -133,7 +133,7 @@
             <th>headline</th>
         </tr>
         <tr>
-            <td><input type="checkbox" name="lala1" /></td>
+            <td><span><input type="checkbox" name="lala1" /></span></td>
             <td>testtext</td>
             <td>testtext</td>
             <td>testtext</td>
