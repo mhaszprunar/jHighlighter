@@ -26,23 +26,34 @@
 
               $.fn.highlightSelection = function( options ) {
 
+                var $elementScope = $(this); // remember scope
+                
                 // Create some defaults, extending them with any options that were provided
                 var settings = $.extend( {
                       'elementType'     : 'checkbox',  // checkbox | radio | block  (block = just line highlighting, no element activation)
                       'highlightClass'  : 'lineChecked', // any CSS class name
                       'hideContainer'   : true,  // hides the parent element of the radio or checkbox
-                      
+                      'multipleSelection' : true  // only valid if elementType = block. For all others this will be set automatically
                     }, options);
 
-                var toggleCheckbox = function($element, $checkbox){
+                // setting multipleSelection right for checkbox and radio
+                switch(settings.elementType)
+                {
+                    case 'radio': settings.multipleSelection = false; break;
+                    case 'checkbox': settings.multipleSelection = true; break;                   
+                }
+
+                // helper function to toggle elements
+                var toggleElement = function($element, $input){
                     $element.toggleClass(settings.highlightClass);
 
-                    var newCheckState = ($checkbox.is(':checked')) ? false : true;
-                    $checkbox.prop('checked', newCheckState);
+                    var newCheckState = ($input.is(':checked')) ? false : true;
+                    $input.prop('checked', newCheckState);
                 }
                 
-                var resetCheckboxes = function(){
-                    var $elements = $('.' + settings.highlightClass).removeClass(settings.highlightClass);
+                // reset every element to deactivated state
+                var resetElements = function(){
+                    var $elements = $elementScope.filter('.' + settings.highlightClass).removeClass(settings.highlightClass);
                     
                     if(settings.elementType !== 'block')
                     {
@@ -54,10 +65,10 @@
                 // Go!
                 return this.each(function() {
                     var $element = $(this),
-                        $checkbox = (settings.elementType === 'block') ? $(null) : $element.find(':'+settings.elementType);
+                        $input = (settings.elementType === 'block') ? $(null) : $element.find(':'+settings.elementType);
 
                     // if checkboxes are already activated
-                    if($checkbox.is(':checked'))
+                    if($input.is(':checked'))
                     {
                         $element.addClass(settings.highlightClass);
                     }
@@ -65,16 +76,16 @@
                     // hide container
                     if(settings.hideContainer)
                     {
-                        $checkbox.parent().hide(); // if no checkbox then no hide happens
+                        $input.parent().hide(); // if no checkbox then no hide happens
                     }
 
                     // click handler
                     $element.on('click', function(){
-                        if(settings.elementType === 'radio') // no multiple selection
+                        if(settings.multipleSelection === false) // no multiple selection, e.g. radio or custom set
                         {
-                            resetCheckboxes();
+                            resetElements();
                         }
-                        toggleCheckbox($element, $checkbox); // activate clicked checkbox
+                        toggleElement($element, $input); // activate clicked checkbox
                     });
 
                 });
