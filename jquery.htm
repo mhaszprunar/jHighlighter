@@ -33,6 +33,7 @@
                       'elementType'         : 'checkbox',       // checkbox | radio | block  (block = just line highlighting, no element activation)
                       'highlightClass'      : 'lineChecked',    // any CSS class name
                       'hideParent'          : true,             // hides the parent element of the radio or checkbox. Set to FALSE for block elements automatically
+                      'parentFilter'        : null,             // if hideParent is true this filter will be used for parents()
                       'multipleSelection'   : true              // only valid if elementType = block. For all others this will be set automatically
                     }, options);
 
@@ -73,10 +74,17 @@
                         $element.addClass(settings.highlightClass);
                     }
 
-                    // hide container
+                    // hide parent element
                     if(settings.hideParent)
                     {
-                        $input.parent().hide(); // if no checkbox then no hide happens
+                        if(settings.parentFilter === null) // if no parentFilter is given, hide the parent one level up
+                        {
+                            $input.parent().hide();
+                        }
+                        else // if parentFilter is given, use it
+                        {
+                            $input.parents(settings.parentFilter).hide();   
+                        }
                     }
 
                     // click handler
@@ -98,10 +106,8 @@
     
     <script>
         $(function(){
-            var options = {
-                hideContainer : false
-            };
-           $('#testtable').find('tr').highlightSelection(options);
+            
+           $('#testtable').find('tr').highlightSelection({parentFilter:'span,td'});
            
            $('section').highlightSelection({elementType:'block'});
            
